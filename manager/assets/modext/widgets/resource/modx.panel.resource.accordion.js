@@ -28,43 +28,6 @@ MODx.panel.ResourceAccordion = function(config) {
         ,tbar: {}
     });
 
-//
-//    // Get the dynamic toolbar
-//    Ext.Ajax.request({
-//        url: config.remoteToolbarUrl || config.url
-//        ,params: {
-//            action: config.remoteToolbarAction || 'getToolbar'
-//        }
-//        ,success: function(r) {
-//            r = Ext.decode(r.responseText);
-//            var itms = this._formatToolbar(r.object);
-//            var tb = this.getTopToolbar();
-//            if (tb) {
-//                for (var i=0;i<itms.length;i++) {
-//                    tb.add(itms[i]);
-//                }
-//                tb.doLayout();
-//            }
-//        }
-//        ,scope:this
-//    });
-//    config.tbar = {bodyStyle: 'padding: 0'};
-//
-//
-//    // Get the context list
-//    Ext.Ajax.request({
-//        url: MODx.config.connectors_url+"context/index.php"
-//        ,params: {
-//            action: 'getlist'
-//        },
-//        success: function(r){
-//            var data = Ext.util.JSON.decode(r.responseText);
-//            this._onContextListRecieved(data);
-//        },
-//        scope: this
-//    })
-//
-
     MODx.panel.ResourceAccordion.superclass.constructor.call(this,config);
 
 
@@ -74,41 +37,6 @@ Ext.extend(MODx.panel.ResourceAccordion,MODx.Panel,{
     activePanel: false
 
 
-    ,addSearchToolbar: function() {
-        var t = Ext.get('modx-resource-accordion_tb');
-        var fbd = t.createChild({tag: 'div' ,cls: 'modx-formpanel' ,autoHeight: true, id: 'modx-resource-searchbar'});
-        var tb = new Ext.Toolbar({
-            applyTo: fbd
-            ,autoHeight: true
-            ,width: '100%'
-        });
-        var tf = new Ext.form.TextField({
-            name: 'search'
-            ,value: ''
-            ,ctCls: 'modx-leftbar-second-tb'
-            ,width: Ext.getCmp('modx-resource-tree').getWidth() - 12
-            ,emptyText: _('search_ellipsis')
-            ,listeners: {
-                'change': {fn: this.search,scope:this}
-                ,'render': {fn: function(cmp) {
-                    new Ext.KeyMap(cmp.getEl(), {
-                        key: Ext.EventObject.ENTER
-                        ,fn: function() {
-                            this.fireEvent('change',this.getValue());
-                            this.blur();
-                            return true;}
-                        ,scope: cmp
-                    });
-                },scope:this}
-            }
-        });
-        tb.add(tf);
-        tb.doLayout();
-        this.searchBar = tb;
-        this.on('resize', function(){
-            tf.setWidth(this.getWidth() - 12);
-        }, this);
-    }
 
     /**
      * Add Items to the toolbar.
@@ -184,7 +112,8 @@ Ext.extend(MODx.panel.ResourceAccordion,MODx.Panel,{
             var panel = {
                 xtype: 'modx-panel-resource-accordion-panel',
                 title: ctx.name,
-                contextKey: ctx.key
+                contextKey: ctx.key,
+                ctx: ctx
             };
             // Make sure web is at the top
             if(ctx.key == 'web'){
@@ -196,7 +125,7 @@ Ext.extend(MODx.panel.ResourceAccordion,MODx.Panel,{
         this.add(panels);
         this.doLayout();
 
-        console.log(this.items.items[0].expand())
+        console.log(data)
 
         this.activePanel = this.items.items[0];
     }
@@ -231,14 +160,20 @@ Ext.extend(MODx.panel.ResourceAccordion,MODx.Panel,{
     }
 
     ,collapseAll: function(){
-        if(this.activePanel){
-            this.activePanel.collapseTree();
+        for(var k=0;k<this.items.items.length;k++){
+            var panel = this.items.items[k];
+            if(!panel.collapsed){
+                panel.collapseTree();
+            }
         }
     }
 
     ,expandAll: function(){
-        if(this.activePanel){
-            this.activePanel.expandTree();
+        for(var k=0;k<this.items.items.length;k++){
+            var panel = this.items.items[k];
+            if(!panel.collapsed){
+                panel.expandTree();
+            }
         }
     }
 

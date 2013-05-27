@@ -22,14 +22,9 @@ MODx.tree.ContextResources = function(config) {
         ,deferredRender: false
         ,sortAction: 'crossContextSort'
         ,dropConfig: {
-            allowParentInsert:true,
+//            allowParentInsert:true,
             allowContainerDrop: true,
             ddGroup: 'modx-treedrop-dd',
-            listeners: {
-                containerDrop: {fn:function(){
-                    console.log('container drop');
-                }}
-            }
         }
         ,showDefaultToolbar: false
         ,tbarCfg: {
@@ -42,9 +37,7 @@ MODx.tree.ContextResources = function(config) {
             ,contextKey: config.contextKey || 'web'
         }
         ,listeners: {
-            load: {fn: this._onNodeLoad, scope:this},
-            nodedrop: {fn: this._onNodeDrop, scope: this},
-            beforenodedrop: {fn: this._onBeforeNodeDrop, scope: this}
+            load: {fn: this._onNodeLoad, scope:this}
         }
      });
 
@@ -64,14 +57,6 @@ MODx.tree.ContextResources = function(config) {
 Ext.extend(MODx.tree.ContextResources, MODx.tree.Tree,{
 
     dud: function(){}
-
-    ,_onBeforeNodeDrop: function(){
-        console.log('before node drop');
-    }
-
-    ,_onNodeDrop: function(){
-        console.log('NODE DROPPED!');
-    }
 
     ,_onNodeLoad: function(node){
         if(node.isRoot){
@@ -408,7 +393,7 @@ Ext.extend(MODx.tree.ContextResources, MODx.tree.Tree,{
     }
 
     ,getContextSettingForNode: function(node,ctx,setting,dv) {
-        console.log(ctx,node);
+        console.log(this.ownerCt.ctx,ctx);
         var val = dv || null;
         if (node.attributes.type != 'modContext') {
             var t = node.getOwnerTree();

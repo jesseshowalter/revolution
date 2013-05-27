@@ -2277,10 +2277,14 @@ span.required {
 }
 
 
-#modx-resource-accordion .modx-panel-header .x-tool-edit {
+#modx-resource-accordion .modx-panel-header .x-tool {
     display:none
 }
-#modx-resource-accordion .modx-panel-header:hover .x-tool-edit {
+#modx-resource-accordion .modx-panel-header:hover .x-tool {
+    display: block;
+}
+
+#modx-resource-accordion .modx-panel-header .x-tool-toggle {
     display: block;
 }
 

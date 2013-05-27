@@ -19,18 +19,28 @@ MODx.panel.ResourceAccordionPanel = function(config) {
         ,collapsed: true
         ,cls: 'modx-resource-accordion'
         ,tools: [{
+                id: 'refresh',
+                qtip: 'Refresh Context',
+                handler: function(){
+                        this.refresh();
+                    },scope: this
+            },{
+                id: 'maximize',
+                qtip: 'Expand/Contract all',
+                handler: function(){
+                        this._toggleTree();
+                    },scope: this
+            },{
                 id: 'edit',
                 handler: function(){
-                    document.location.href = '?a=context/update&key='+config.contextKey
-                },
-                scope: this,
+                        document.location.href = '?a=context/update&key='+config.contextKey
+                    },scope: this,
                 qtip: "Edit context"
             },{
                 id: 'toggle',
                 handler: function(){
                         this.toggleCollapse()
-                    },
-                scope:this
+                    },scope:this
             }]
         ,listeners: {
             render: {fn:this._onRender,scope:this},
@@ -68,12 +78,17 @@ Ext.extend(MODx.panel.ResourceAccordionPanel,Ext.Panel,{
         this.items.items[0].refresh()
     }
 
-    ,expandTree: function(){
-        this.items.items[0].expandAll();
-    }
-
     ,collapseTree: function(){
         this.items.items[0].collapseAll();
+    }
+
+    ,_toggleTree: function(){
+        var tree = this.items.items[0];
+        if(tree.root.expanded){
+            tree.collapseAll();
+        } else {
+            tree.expand();
+        }
     }
 
     ,updateEmptyStatus: function( empty){
