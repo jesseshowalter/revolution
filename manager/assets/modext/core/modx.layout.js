@@ -31,7 +31,7 @@ MODx.Layout = function(config){
     if (MODx.perm.resource_tree) {
        tabs.push({
             title: _('resources')
-            ,xtype: 'modx-tree-resource'
+            ,xtype: 'modx-panel-resource-accordion'
             ,id: 'modx-resource-tree'
         });
         showTree = true;
