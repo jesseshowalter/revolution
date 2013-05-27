@@ -87,7 +87,7 @@ input::-moz-focus-inner {
     -moz-border-radius:0 0 4px 4px;
     -webkit-border-radius:0 0 4px 4px;
     border-radius:0 0 4px 4px;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
     background-color: #fbfbfb;
     border: 1px solid #999;
     border-top: 0;
